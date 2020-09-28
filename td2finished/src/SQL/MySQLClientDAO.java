@@ -9,39 +9,23 @@ import Metier.CMClient;
 import dao.ClientDAO;
 
 public class MySQLClientDAO implements ClientDAO {
-
-
-
-
 	public CMClient getById(int id_client) throws SQLException {
-		
 		CMClient client = null;
-		
 		Connection MaConnection = Connexion.creeConnexion();
-		PreparedStatement req = MaConnection.prepareStatement("select * from Client where id_client = ?");
+		PreparedStatement req = MaConnection.prepareStatement("SELECT * from Client where id_client = ?");
 		req.setInt(1, id_client);
-		
-		
 		ResultSet res = req.executeQuery();
 		
 		while (res.next()) {
 			client= new CMClient(id_client, res.getString(2), res.getString(3),res.getString(4), res.getString(5),res.getString(6),res.getString(7),
 					res.getString(8),res.getString(9),res.getString(10));
-			
 		}
-		
 		MaConnection.close();
 		req.close();
 		res.close();
-		
 		return client;
-		
 	}
-
-//----------------------------------------------------------------------------------------------------------------------------------------------------------------	
-
 	public boolean create(CMClient c) throws  SQLException{
-		//
 		Connection laConnection = Connexion.creeConnexion();
 			PreparedStatement req = laConnection.prepareStatement("INSERT INTO Client (nom, prenom, no_rue, voie, code_postal, ville, pays) values (?,?, ?,?, ?,?, ?)", java.sql.Statement.RETURN_GENERATED_KEYS);
 				req.setString(1, c.getNom());
@@ -53,29 +37,21 @@ public class MySQLClientDAO implements ClientDAO {
 				req.setString(7, c.getAdr_code_postal());
 				req.setString(8, c.getAdr_ville());
 				req.setString(9, c.getAdr_pays());
-				
 				int nbLignes = req.executeUpdate();
 				ResultSet res = req.getGeneratedKeys();
-
 				int clef;
 				if(res.next()) {
 					clef = res.getInt(1);
 					c.setId_client(clef);
 						
 				}
-				
 				laConnection.close();
 				req.close();
 				res.close();
-				
 				return nbLignes==1;
-		}
-	
-//----------------------------------------------------------------------------------------------------------------------------------------------------------------	
+	}
 	public boolean update(CMClient c) throws SQLException {
-		
 		Connection laConnection = Connexion.creeConnexion();
-		
 		PreparedStatement req = laConnection.prepareStatement("update Client set nom=? ,"
 				+ "prenom=?, identifiant = ?, mot_de_passe=?,adr_numero=?,adr_voie=?, adr_code_postal=?, adr_ville=?, adr_pays=? where id_client=?");
 		req.setInt(8, c.getId_client());
@@ -89,101 +65,59 @@ public class MySQLClientDAO implements ClientDAO {
 		req.setString(8, c.getAdr_ville());
 		req.setString(9, c.getAdr_pays());
 		int nbLignes = req.executeUpdate();
-	
-		
-
 		laConnection.close();
 		req.close();
-		
-	return nbLignes==1;
+		return nbLignes==1;
 	}
-
-//----------------------------------------------------------------------------------------------------------------------------------------------------------------	
 	public boolean delete(CMClient c) throws SQLException {
-		
-	    	
-	    	try {
-	    	Connection laConnection = Connexion.creeConnexion();
+	    try {
+	    Connection laConnection = Connexion.creeConnexion();
 		PreparedStatement req = laConnection.prepareStatement("delete * from Client where id_client=?");
-		req.setInt(1,c.getId_client());
-		
-		
-		
+		req.setInt(1,c.getId_client());	
 		int nbLignes = req.executeUpdate();
-		
-
 		laConnection.close();
 		req.close();
 		
 		return nbLignes==1;
-	    	}catch(Exception e) {
-	    	    return false;
-	    	}
+	    } catch(Exception e) {
+	    	return false;
+	    }
 }
-		
-	
-//----------------------------------------------------------------------------------------------------------------------------------------------------------------	
-
 	public ArrayList<CMClient> getByNomPrenom(String n, String p) throws SQLException{
 		ArrayList<CMClient> cl = new ArrayList<CMClient>();
-		
-		
 		Connection MaConnection = Connexion.creeConnexion();
 		PreparedStatement req = MaConnection.prepareStatement("select * from Client where nom = ? and prenom = ?");
 		req.setString(1, n);
 		req.setString(2, p);
-		
-		
-		ResultSet res = req.executeQuery();
-		
+		ResultSet res = req.executeQuery();	
 		while (res.next()) {
 			cl.add(new CMClient(res.getInt(1), res.getString(2), res.getString(3),res.getString(4), res.getString(5),res.getString(6),res.getString(7),
 					res.getString(8),res.getString(9),res.getString(10)));
-			
 		}
-		
-
-		
 		req.close();
 		res.close();
 		return cl;
 	}
-
-
-//----------------------------------------------------------------------------------------------------------------------------------------------------------------		
 	private static MySQLClientDAO instance;
-	
 	private  MySQLClientDAO() {
-		;
+		
 	}
-	
 	public static MySQLClientDAO getInstance() {
 		if (instance==null) {
 			instance = new MySQLClientDAO();
 		}
 	return instance;
 	}
-//----------------------------------------------------------------------------------------------------------------------------------------------------------------		
-	public ArrayList<CMClient> findAll() throws  SQLException{
+	public ArrayList<CMClient> findAll() throws  SQLException {
 		ArrayList<CMClient> cl = new ArrayList<CMClient>();
-		
-		
 		Connection MaConnection = Connexion.creeConnexion();
 		PreparedStatement req = MaConnection.prepareStatement("select * from Client ");
-		
-		
-		
 		ResultSet res = req.executeQuery();
-		
 		while (res.next()) {
 			cl.add(new CMClient(res.getInt(1), res.getString(2), res.getString(3),res.getString(4), res.getString(5),res.getString(6),res.getString(7),
 					res.getString(8),res.getString(9),res.getString(10)));
-			
 		}
-		
-
 		req.close();
 		res.close();
 		return cl;}		
-	
 }

@@ -78,6 +78,4 @@ public class CMCommande {
 			return false;
 		return true;
 	}
-	
-	
 }

@@ -1,5 +1,4 @@
 package ListMemoire;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,11 +6,8 @@ import Metier.CMClient;
 import dao.ClientDAO;
 
 public class ListeMemoireClientDAO implements ClientDAO{
-
 	private static ListeMemoireClientDAO instance;
-	
 	private List<CMClient> donnees;
-	
 	public static ListeMemoireClientDAO getInstance() {
 		if(instance == null) {
 			instance = new ListeMemoireClientDAO();
@@ -20,10 +16,9 @@ public class ListeMemoireClientDAO implements ClientDAO{
 	}
 	private ListeMemoireClientDAO() {
 		this.donnees=new ArrayList<CMClient>();
-		this.donnees.add(new CMClient(1,"GAO","Chang","gao9","2","2334","57","57000","Metz","France"));
-		this.donnees.add(new CMClient(2,"AlEX","Nicola","nicola0","4","4444","57","57510","Lyon","France"));
+		this.donnees.add(new CMClient(1,"CHARPENTIER","Clément","charpe111u","mdp","1","57","57000","Metz","France"));
+		this.donnees.add(new CMClient(2,"SIMON","Marco","simon429u","mdp","1","57","57000","Metz","France"));
 	}
-	
 	@Override
 	public boolean create(CMClient objet) {
 		objet.setId_client(3);
@@ -33,8 +28,6 @@ public class ListeMemoireClientDAO implements ClientDAO{
 		boolean ok= this.donnees.add(objet);
 		return ok;
 	}
-	
-
 	@Override
 	public boolean update(CMClient objet){
 		int idx = this.donnees.indexOf(objet);
@@ -47,7 +40,6 @@ public class ListeMemoireClientDAO implements ClientDAO{
 		
 		return true;
 	}
-
 	@Override
 	public boolean delete(CMClient objet) {
 
@@ -72,13 +64,11 @@ public class ListeMemoireClientDAO implements ClientDAO{
 					return this.donnees.get(idx);
 				}
 	}
-
 	@Override
 	public ArrayList<CMClient> findAll() throws Exception {
 		// TODO Auto-generated method stub
 		return (ArrayList<CMClient>) this.donnees;
 	}
-
 	@Override
 	public ArrayList<CMClient> getByNomPrenom(String n, String p) throws Exception {
 		ArrayList<CMClient> ar = new ArrayList<CMClient>();
@@ -88,5 +78,5 @@ public class ListeMemoireClientDAO implements ClientDAO{
 			}
 		}
 		return ar;
-}
+	}
 }
